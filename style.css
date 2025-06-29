@@ -84,6 +84,8 @@ body {
   display: flex;
   gap: 20px;
   flex-wrap: wrap;
+  max-height: 70vh;
+  overflow-y: scroll;
 }
 
 .card {
@@ -130,4 +132,17 @@ body {
   height: 100%;
   display: block;
   fill: #1DB954;
+}
+
+.signupbtn,
+.loginbtn {
+  background-color: white;
+  color: black;
+  border: none;
+  border-radius: 16px;
+  padding: 7px 15px;
+  font-family: 'Roboto';
+  font-weight: 600;
+  margin: 0 8px;
+
 }
