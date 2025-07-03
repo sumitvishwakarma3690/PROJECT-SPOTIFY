@@ -61,7 +61,7 @@ body {
 ::-webkit-scrollbar-thumb {
     background: #444;
     /* Dark gray scrollbar handle */
-    border-radius: 10px;
+    border-radius: 10px; 
 }
 
 ::-webkit-scrollbar-thumb:hover {

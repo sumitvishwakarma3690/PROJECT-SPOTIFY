@@ -43,7 +43,6 @@ const playMusic = (track, pause = false) => {
 
   document.querySelector(".songInfo").innerHTML = decodeURI(track);
   document.querySelector(".songTime").innerHTML = "00:00 / 00:00";
-  
 };
 
 async function main() {
@@ -99,6 +98,24 @@ async function main() {
     document.querySelector(".songTime").innerHTML = `${secondsToMinutesSeconds(
       currentSong.currentTime
     )}/${secondsToMinutesSeconds(currentSong.duration)}`;
+    document.querySelector(".circle").style.left = (currentSong.currentTime/currentSong.duration) * 100 + "%";
   });
+
+  // add an event listener to seekbar 
+  document.querySelector(".seekbar").addEventListener("click", e=>{
+    let percent = (e.offsetX/e.target.getBoundingClientRect().width) * 100 ;
+    document.querySelector(".circle").style.left = percent + "%"
+    currentSong.currentTime = (currentSong.duration * percent)/100
+  })
+
+  // Add event listener for hamburger 
+  document.querySelector(".hamburger").addEventListener("click", ()=> {
+    document.querySelector(".left").style.left = 0
+  })
+
+  // Add event listener for close button 
+  document.querySelector(".close").addEventListener("click", ()=>{
+    document.querySelector(".left").style.left = "-120%"
+  })
 }
 main();
