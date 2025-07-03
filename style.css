@@ -255,3 +255,12 @@ body {
   left: 0%;
   transition: left 0.5s;
 }
+
+.songInfo, .songTime{
+  color: black;
+}
+
+.abovebar{
+  display: flex;
+  justify-content: space-between;
+}
