@@ -2,6 +2,7 @@ console.log("Let's write some javascript");
 
 // This function return all the songs from songs directory
 let currentSong = new Audio();
+let songUL;
 
 function secondsToMinutesSeconds(seconds) {
   if (isNaN(seconds) || seconds < 0) {
@@ -116,6 +117,33 @@ async function main() {
   // Add event listener for close button 
   document.querySelector(".close").addEventListener("click", ()=>{
     document.querySelector(".left").style.left = "-120%"
+  })
+
+  // add event listeners to previous  
+  previous.addEventListener("click", ()=>{
+    console.log("Previous clikced")
+    console.log(currentSong)
+    let index = songs.indexOf(currentSong.src.split("/").slice(-1)[0])
+    if((index-1) >= 0) {
+      playMusic(songs[index-1])
+    }
+  })
+
+  // add event listeners to next
+  next.addEventListener("click", ()=>{
+    currentSong.pause()
+    console.log("Next clikced")
+    let index = songs.indexOf(currentSong.src.split("/").slice(-1)[0])
+    if((index+1) < songs.length) {
+      playMusic(songs[index+1])
+    }
+
+  })
+
+  // add an event to volume
+  document.querySelector(".volume").getElementsByTagName("input")[0].addEventListener("change", (e)=>{
+    console.log("Setting volume to", e.target.value, "/ 100")
+    currentSong.volume = parseInt(e.target.value)/100
   })
 }
 main();
