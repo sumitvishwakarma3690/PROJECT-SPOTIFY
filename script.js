@@ -2,7 +2,8 @@ console.log("Let's write some javascript");
 
 // This function return all the songs from songs directory
 let currentSong = new Audio();
-let songUL;
+let songs;
+let currFolder;
 
 function secondsToMinutesSeconds(seconds) {
   if (isNaN(seconds) || seconds < 0) {
@@ -18,25 +19,55 @@ function secondsToMinutesSeconds(seconds) {
   return `${formattedMinutes}:${formattedSeconds}`;
 }
 
-async function getSongs() {
-  let a = await fetch("http://127.0.0.1:3000/songs/");
+async function getSongs(folder) {
+  currFolder = folder;
+  let a = await fetch(`http://127.0.0.1:3000/${folder}/`);
   let response = await a.text();
   let div = document.createElement("div");
   div.innerHTML = response;
   let as = div.getElementsByTagName("a");
-  let songs = [];
+  songs = [];
   for (let i = 0; i < as.length; i++) {
     const element = as[i];
     if (element.href.endsWith("mp3")) {
-      songs.push(element.href.split("/songs/")[1]); // ye jo hai /songs ke baad ka jo bhi hai wo lega
+      songs.push(element.href.split(`/${folder}/`)[1]); // ye jo hai /songs ke baad ka jo bhi hai wo lega
     }
   }
-  return songs;
+
+   // Show all the songs in the playlist
+  let songUL = document.querySelector(".songList").getElementsByTagName("ul")[0];
+  songUL.innerHTML = ""
+  for (const song of songs) {
+    songUL.innerHTML = 
+      songUL.innerHTML +
+      `<li>
+                            <img class="invert" src="/img/music.svg" alt="">
+                            <div class="info">
+                                <div>${song.replaceAll("%20", " ")}</div> 
+                                <div>Sumit</div>
+                            </div>
+                            <div class="playnow">
+                               <span>Play Now</span> 
+                                <img class="invert" src="img/play.svg" alt="">
+                            </div></li>`;
+    // ye line jo hai songs ko inner HTML me dalega aur usko sahi format me dikhane ke liye list aur replaceAll the use hua hai
+  }
+
+  // Attach an event listener to each song
+  Array.from(
+    document.querySelector(".songList").getElementsByTagName("li")
+  ).forEach((e) => {
+    e.addEventListener("click", (element) => {
+      playMusic(e.querySelector(".info").firstElementChild.innerHTML.trim());
+    });
+  });
+
+
 }
 
 // stops and play the music
 const playMusic = (track, pause = false) => {
-  currentSong.src = "/songs/" + track;
+  currentSong.src = `/${currFolder}/` + track;
   if (!pause) {
     currentSong.play();
     play.src = "img/pause.svg";
@@ -48,39 +79,12 @@ const playMusic = (track, pause = false) => {
 
 async function main() {
   // Get the list of all the songs
-  let songs = await getSongs();
+   await getSongs("songs/ncs");
   playMusic(songs[0], true);
-  console.log(songs);
 
-  // Show all the songs in the playlist
-  let songUL = document
-    .querySelector(".songList")
-    .getElementsByTagName("ul")[0];
-  for (const song of songs) {
-    songUL.innerHTML =
-      songUL.innerHTML +
-      `<li>
-                            <img class="invert" src="/img/music.svg" alt="">
-                            <div class="info">
-                                <div>${song.replaceAll("%20", " ")}</div> 
-                                <div>Sumit</div>
-                            </div>
-                            <div class="playnow">
-                               <span>Play Now</span> 
-                                <img class="invert" src="img/play-circle.svg" alt="">
-                            </div></li>`;
-    // ye line jo hai songs ko inner HTML me dalega aur usko sahi format me dikhane ke liye list aur replaceAll the use hua hai
-  }
+ //Display all the albums on the page
 
-  // Attach an event listener to each song
-  Array.from(
-    document.querySelector(".songList").getElementsByTagName("li")
-  ).forEach((e) => {
-    e.addEventListener("click", (element) => {
-      console.log(e.querySelector(".info").firstElementChild.innerHTML);
-      playMusic(e.querySelector(".info").firstElementChild.innerHTML.trim());
-    });
-  });
+
 
   // Attack an event listener to play, next and previous
   play.addEventListener("click", () => {
@@ -95,7 +99,6 @@ async function main() {
 
   // Listen for timeupdate event
   currentSong.addEventListener("timeupdate", () => {
-    console.log(currentSong.currentTime, currentSong.duration);
     document.querySelector(".songTime").innerHTML = `${secondsToMinutesSeconds(
       currentSong.currentTime
     )}/${secondsToMinutesSeconds(currentSong.duration)}`;
@@ -122,7 +125,6 @@ async function main() {
   // add event listeners to previous  
   previous.addEventListener("click", ()=>{
     console.log("Previous clikced")
-    console.log(currentSong)
     let index = songs.indexOf(currentSong.src.split("/").slice(-1)[0])
     if((index-1) >= 0) {
       playMusic(songs[index-1])
@@ -142,8 +144,16 @@ async function main() {
 
   // add an event to volume
   document.querySelector(".volume").getElementsByTagName("input")[0].addEventListener("change", (e)=>{
-    console.log("Setting volume to", e.target.value, "/ 100")
     currentSong.volume = parseInt(e.target.value)/100
   })
+
+  // load the playlist whenever the card is clicked 
+  Array.from(document.getElementsByClassName("card")).forEach(e=>{ 
+    e.addEventListener("click", async item=>{
+      console.log(item, item.currentTarget.dataset)
+      songs = await getSongs(`songs/${item.currentTarget.dataset.folder}`)
+    })
+  })
+
 }
 main();
