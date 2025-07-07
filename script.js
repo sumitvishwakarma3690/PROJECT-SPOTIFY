@@ -77,13 +77,27 @@ const playMusic = (track, pause = false) => {
   document.querySelector(".songTime").innerHTML = "00:00 / 00:00";
 };
 
+async function displayAlbums() {
+  let a = await fetch(`http://127.0.0.1:3000/songs/`);
+  let response = await a.text();
+  let div = document.createElement("div");
+  div.innerHTML = response;
+ let anchers =  div.getElementsByTagName("a")
+ Array.from(anchers).forEach(e=>{
+  if(e.href.includes("/songs")) {
+    console.log(e.href.split("/").slice(-2)[0])
+  }
+ })
+  
+}
+
 async function main() {
   // Get the list of all the songs
    await getSongs("songs/ncs");
   playMusic(songs[0], true);
 
  //Display all the albums on the page
-
+  displayAlbums() 
 
 
   // Attack an event listener to play, next and previous
