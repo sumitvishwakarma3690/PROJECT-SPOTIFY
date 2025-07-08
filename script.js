@@ -97,6 +97,7 @@ async function main() {
   playMusic(songs[0], true);
 
  //Display all the albums on the page
+ // writing a function to display albums
   displayAlbums() 
 
 
