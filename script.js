@@ -83,11 +83,38 @@ async function displayAlbums() {
   let div = document.createElement("div");
   div.innerHTML = response;
  let anchers =  div.getElementsByTagName("a")
- Array.from(anchers).forEach(e=>{
+ let cardContainer = document.querySelector(".cardContainer")
+ let array = Array.from(anchers)
+  for (let index = 0; index < array.length; index++) {
+    const e = array[index];
+    
   if(e.href.includes("/songs")) {
-    console.log(e.href.split("/").slice(-2)[0])
+    let folder = e.href.split("/").slice(-2)[0]
+    //Get the meta data of the folder
+    let a = await fetch(`http://127.0.0.1:3000/songs/${folder}/info.json`);
+    let response = await a.json();
+    console.log(response)
+    cardContainer.innerHTML = cardContainer.innerHTML + `
+     <div data-folder="cs" class="card">
+                        <div class="play">
+                            <svg class="play-icon" viewBox="0 0 24 24">
+                                <path d="M8 5v14l11-7z" />
+                            </svg>
+                        </div>
+                        <img src="/songs/${folder}/cover.jpg" alt="happyhits">
+                        <h2>${response.title}</h2>
+                        <p>${response.description}</p>
+                    </div>`
   }
- })
+ }
+
+// load the playlist whenever the card is clicked 
+  Array.from(document.getElementsByClassName("card")).forEach(e=>{ 
+    e.addEventListener("click", async item=>{
+      console.log(item, item.currentTarget.dataset)
+      songs = await getSongs(`songs/${item.currentTarget.dataset.folder}`)
+    })
+  })
   
 }
 
@@ -162,13 +189,7 @@ async function main() {
     currentSong.volume = parseInt(e.target.value)/100
   })
 
-  // load the playlist whenever the card is clicked 
-  Array.from(document.getElementsByClassName("card")).forEach(e=>{ 
-    e.addEventListener("click", async item=>{
-      console.log(item, item.currentTarget.dataset)
-      songs = await getSongs(`songs/${item.currentTarget.dataset.folder}`)
-    })
-  })
+  
 
 }
 main();
