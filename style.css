@@ -330,6 +330,10 @@ body {
   gap: 10px;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
+}
+.range input{
+  cursor: pointer;
 }
 
 .abovebar {

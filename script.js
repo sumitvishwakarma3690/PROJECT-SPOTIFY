@@ -95,7 +95,7 @@ async function displayAlbums() {
     let response = await a.json();
     console.log(response)
     cardContainer.innerHTML = cardContainer.innerHTML + `
-     <div data-folder="cs" class="card">
+     <div data-folder="${folder}" class="card">
                         <div class="play">
                             <svg class="play-icon" viewBox="0 0 24 24">
                                 <path d="M8 5v14l11-7z" />
@@ -185,8 +185,24 @@ async function main() {
   })
 
   // add an event to volume
-  document.querySelector(".volume").getElementsByTagName("input")[0].addEventListener("change", (e)=>{
+  document.querySelector(".range").getElementsByTagName("input")[0].addEventListener("change", (e)=>{
     currentSong.volume = parseInt(e.target.value)/100
+  })
+
+  // add event listener to mute the track
+  document.querySelector(".volume>img").addEventListener("click", (e)=>{
+    console.log(e.target)
+    if(e.target.src.includes("volume.svg")){
+      e.target.src = e.target.src.replace("volume.svg", "mute.svg")
+      currentSong.volume = 0;
+      document.querySelector(".range").getElementsByTagName("input")[0].value = 0;
+    }
+    else{
+      e.target.src = e.target.src.replace("mute.svg", "volume.svg")
+      currentSong.volume = .10;
+      document.querySelector(".range").getElementsByTagName("input")[0].value = 10;
+
+    }
   })
 
   
