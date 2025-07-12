@@ -61,7 +61,7 @@ async function getSongs(folder) {
       playMusic(e.querySelector(".info").firstElementChild.innerHTML.trim());
     });
   });
-
+  return songs
 
 }
 
@@ -113,6 +113,7 @@ async function displayAlbums() {
     e.addEventListener("click", async item=>{
       console.log(item, item.currentTarget.dataset)
       songs = await getSongs(`songs/${item.currentTarget.dataset.folder}`)
+      playMusic(songs[0])
     })
   })
   
