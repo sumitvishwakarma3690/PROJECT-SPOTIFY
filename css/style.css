@@ -1,10 +1,11 @@
 @import url("https://fonts.googleapis.com/css2?family=Baloo+Bhai+2:wght@500&family=Poppins&family=Roboto:ital,wght@0,100..900;1,100..900&family=Ubuntu&display=swap");
 
 
-:root{
+:root {
   --a: 0;
 
 }
+
 * {
   margin: 0;
   padding: 0;
@@ -59,7 +60,7 @@ body {
 }
 
 .footer {
-  /* position: absolute; */
+  position: absolute;
   bottom: 0;
   display: flex;
   font-size: 10px;
@@ -82,6 +83,7 @@ body {
 
 .hamburger {
   display: none;
+  cursor: pointer;
 }
 
 .hamburgerContainer {
@@ -155,7 +157,7 @@ body {
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
-  max-height: 70vh;
+  max-height: 60vh;
   overflow-y: auto;
 }
 
@@ -177,7 +179,7 @@ body {
   object-fit: contain;
 }
 
-.card:hover{
+.card:hover {
   background-color: #1F1F1F;
   cursor: pointer;
   --a: 1;
@@ -197,7 +199,7 @@ body {
   /* box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); */
   cursor: pointer;
   position: absolute;
-  top: 150px; 
+  bottom: 120px;
   right: 20px;
   opacity: var(--a);
   transition: all 0.3s;
@@ -262,6 +264,9 @@ body {
 
 /* Playbar  */
 .playbar {
+  justify-content: center;
+  display: flex;
+  align-items: center;
   min-height: 40px;
   position: fixed;
   padding: 12px;
@@ -288,7 +293,7 @@ body {
   width: 97%;
   background: black;
   position: absolute;
-  bottom: 0;
+  bottom: 5px;
   border-radius: 10px;
   margin: 6px;
   cursor: pointer;
@@ -332,7 +337,8 @@ body {
   align-items: center;
   cursor: pointer;
 }
-.range input{
+
+.range input {
   cursor: pointer;
 }
 
@@ -346,20 +352,27 @@ body {
 @media (max-width: 1200px) {
   .left {
     position: absolute;
-    left: -120%;
+    left: -130%;
     z-index: 1;
     transition: all 0.3s ease-out;
     width: 375px;
     background-color: black;
     padding: 0;
+    height: 100vh;
+    position: fixed;
+    top: 0;
   }
 
   .right {
     width: 100vw;
   }
-
+  .play{
+    bottom: 100px;
+    right: 25px;
+  }
   .playbar {
     width: calc(100vw - 60px);
+
   }
 
   .hamburger {
@@ -368,11 +381,11 @@ body {
 
   .seekbar {
     width: calc(100vw - 70px);
-    top: 98px;
+    bottom: 10px;
   }
 
   .card {
-    width: 44vw;
+    width: 55vw;
   }
 
   .cardContainer {
@@ -398,17 +411,55 @@ body {
   .songTime {
     width: auto;
   }
-  .timevol{
+
+  .timevol {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
     gap: 10px;
   }
+
+  .cardContainer {
+    max-height: unset;
+    overflow-y: unset;
+    margin-bottom: 35vh;
+  }
 }
 
-@media (max-width: 430px) {
-  .card{
-    width: 68vw;
+@media (max-width: 500px) {
+
+  .cardContainer {
+    max-height: unset;
+    overflow-y: unset;
+    margin-bottom: 35vh;
+  }
+
+  .card {
+    width: 100%;
+  }
+
+  .header {
+    padding: 5px;
+  }
+
+  .header>* {
+    padding: 2px;
+  }
+
+  .buttons>* {
+    margin: 6px 6px;
+  }
+
+  .spotifyPlaylists h1 {
+    padding: 4px;
+  }
+  .left{
+    width: 100vw;
+    position: fixed;
+    top: 0;
+  }
+  .library{
+    height: 85vh;
   }
 }
