@@ -1,4 +1,3 @@
-console.log("Let's write some javascript");
 
 // This function return all the songs from songs directory
 let currentSong = new Audio();
@@ -34,11 +33,13 @@ async function getSongs(folder) {
     }
   }
 
+  
    // Show all the songs in the playlist
   let songUL = document.querySelector(".songList").getElementsByTagName("ul")[0];
   songUL.innerHTML = ""
   for (const song of songs) {
-    songUL.innerHTML = songUL.innerHTML +`<li><img class="invert" src="/img/music.svg" alt="">
+    songUL.innerHTML = songUL.innerHTML +`<li><img class="invert" 
+    src="/img/music.svg" alt="">
                             <div class="info">
                                 <div>${song.replaceAll("%20", " ")}</div> 
                                 <div>Sumit</div>
@@ -49,6 +50,7 @@ async function getSongs(folder) {
                             </div></li>`;
     // ye line jo hai songs ko inner HTML me dalega aur usko sahi format me dikhane ke liye list aur replaceAll the use hua hai
   }
+
 
   // Attach an event listener to each song
   Array.from(document.querySelector(".songList").getElementsByTagName("li")).forEach((e) => {
@@ -75,6 +77,7 @@ const playMusic = (track, pause = false) => {
 };
 
 async function displayAlbums() {
+  console.log("displaying albums")
   let a = await fetch(`/songs/`);
   let response = await a.text();
   let div = document.createElement("div");
@@ -109,7 +112,8 @@ async function displayAlbums() {
   Array.from(document.getElementsByClassName("card")).forEach(e=>{ 
     e.addEventListener("click", async item=>{
       console.log(item, item.currentTarget.dataset)
-      songs = await getSongs(`songs/${item.currentTarget.dataset.folder})`)
+      songs = await getSongs(`songs/${item.currentTarget.dataset.folder}`);
+      const folderName = item.currentTarget.dataset.folder;
       playMusic(songs[0])
     })
   })
